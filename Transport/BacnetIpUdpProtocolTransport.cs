@@ -30,6 +30,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace System.IO.BACnet
@@ -158,6 +159,9 @@ namespace System.IO.BACnet
         /// </remarks>
         private static void DisableConnReset(UdpClient client)
         {
+           // IO Control only support Windows
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return;
+            
             const uint IOC_IN = 0x80000000;
             const uint IOC_VENDOR = 0x18000000;
             const uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
